@@ -7,7 +7,7 @@
     "server": "npm --prefix server start",
     "client": "npm --prefix client run dev",
     "seed": "npm --prefix server run seed",
-    "build": "npm --prefix client run build",
+    "build": "npm --prefix client install --legacy-peer-deps && npm --prefix client run build && node -e \"const fs=require('fs'); fs.cpSync('client/dist', 'dist', {recursive:true});\"",
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,teal\" \"npm run server\" \"npm run client\""
   },
   "keywords": [

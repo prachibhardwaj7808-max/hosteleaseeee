@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+const envUrl = import.meta.env.VITE_API_URL;
+const API_BASE = envUrl
+  ? (envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`)
+  : '/api';
 
 // Helper to make API requests with JWT auth and uniform error handling
 async function request(endpoint, options = {}) {
@@ -20,7 +23,15 @@ async function request(endpoint, options = {}) {
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, config);
-    const data = await res.json();
+    const contentType = res.headers.get('content-type');
+    let data;
+    if (contentType && contentType.includes('application/json')) {
+      data = await res.json();
+    } else {
+      data = { 
+        message: 'Unable to reach backend API. If deployed on Netlify, make sure your backend is running or set the VITE_API_URL environment variable.' 
+      };
+    }
 
     if (!res.ok) {
       const error = new Error(data.message || 'An error occurred during request.');
@@ -36,6 +47,11 @@ async function request(endpoint, options = {}) {
       localStorage.removeItem('hostelease_token');
       localStorage.removeItem('hostelease_user');
       window.dispatchEvent(new Event('hostelease_auth_expired'));
+    }
+    if (!err.status && err.name === 'TypeError') {
+      const netError = new Error('Cannot connect to backend server. If using Netlify, please configure your backend API URL in environment variables (VITE_API_URL).');
+      netError.data = { message: netError.message };
+      throw netError;
     }
     throw err;
   }
