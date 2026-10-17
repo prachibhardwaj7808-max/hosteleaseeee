@@ -1,0 +1,26 @@
+{
+  "name": "hostelease-system",
+  "version": "1.0.0",
+  "description": "HostelEase — Complete Hostel Room Allotment & Complaint Management System",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client run dev",
+    "seed": "npm --prefix server run seed",
+    "build": "npm --prefix client run build",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,teal\" \"npm run server\" \"npm run client\""
+  },
+  "keywords": [
+    "hostel-management",
+    "room-allotment",
+    "complaint-management",
+    "express",
+    "react",
+    "sqlite"
+  ],
+  "author": "B.Tech College Project Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
