@@ -230,3 +230,5 @@ notifications        (id, user_id, title, message, type, is_read, created_at)
    This guarantees that no room ever exceeds its physical bed count.
 3. **Showcase Real Data**: Emphasize that dashboard figures are not hardcoded static mockups; they are calculated live using SQL aggregate functions (`COUNT(*)`, `SUM(capacity)`).
 4. **Demonstrate Mobile Usability**: Press `F12` in Chrome/Edge, toggle mobile view, and showcase the responsive drawer navigation and touch-friendly cards.
+#   h o s t e l e a s e e e e  
+ 
