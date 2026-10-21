@@ -6,7 +6,8 @@ const path = require('path');
 
 dotenv.config();
 
-const { initDb } = require('./db/database');
+const { initDb, get } = require('./db/database');
+const seed = require('./db/seed');
 const authRoutes = require('./routes/auth.routes');
 const roomsRoutes = require('./routes/rooms.routes');
 const requestsRoutes = require('./routes/requests.routes');
@@ -67,6 +68,17 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await initDb();
+
+    // Auto-seed demo data if the database is empty (e.g. fresh Render deployment)
+    const existingUser = await get('SELECT id FROM users LIMIT 1');
+    if (!existingUser) {
+      console.log('Empty database detected — running demo data seed...');
+      await seed();
+      console.log('Auto-seed complete. Demo accounts are ready.');
+    } else {
+      console.log('Database already has data — skipping auto-seed.');
+    }
+
     app.listen(PORT, () => {
       console.log(`====================================================`);
       console.log(` HostelEase Backend Server running on port ${PORT}`);
