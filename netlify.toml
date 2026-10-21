@@ -1,5 +1,5 @@
 [build]
-  command = "npm --prefix client install --legacy-peer-deps && npm --prefix client run build && node -e \"const fs=require('fs'); fs.cpSync('client/dist', 'dist', {recursive:true});\""
+  command = "npm --prefix client install --legacy-peer-deps && npm --prefix client run build"
   publish = "client/dist"
 
 [build.environment]
